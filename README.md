@@ -48,9 +48,6 @@ Feasibility is handled first, preferences are ranked later.
 
 ---
 
-
----
-
 ## ⚙️ How the System Works
 
 1. User provides preferences such as budget, bedrooms, and location.
@@ -64,8 +61,13 @@ Feasibility is handled first, preferences are ranked later.
 
 ## ▶️ Running the Application Locally
 
-Clone the repository:
+Clone the repository: git clone https://github.com/your-username/property-recommendation-system.git
 
+cd property-recommendation-system
+
+Install dependencies: pip install -r requirements.txt
+
+Run the Streamlit app: streamlit run app.py
 
 ---
 
@@ -98,8 +100,7 @@ Clone the repository:
 
 ## 👤 Author
 
-**Lakshya Vipassana**  
-M.Tech – Infrastructure Design and Management  
+**Lakshya Vipassana**   
 Indian Institute of Technology Kharagpur
 
 ---
