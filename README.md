@@ -21,16 +21,21 @@ Built using **Python, scikit-learn, and Streamlit**.
 ## 🧠 System Architecture
 
 User Input
-↓
+|
+v
 Hard Filters (Budget, Bedrooms, Location)
-↓
+|
+v
 Feature Engineering & Normalization
-↓
-Cosine Similarity Scoring
-↓
+|
+v
+Cosine Similarity Calculation
+|
+v
 Weighted Match Score
-↓
-Top-N Ranked Properties
+|
+v
+Top-N Property Recommendations
 
 **Key Design Insight:**  
 Feasibility is handled first, preferences are ranked later.
@@ -45,6 +50,7 @@ Feasibility is handled first, preferences are ranked later.
 - scikit-learn
 - Streamlit
 - Pickle (for model persistence)
+- sentence-transformers
 
 ---
 
@@ -61,7 +67,7 @@ Feasibility is handled first, preferences are ranked later.
 
 ## ▶️ Running the Application Locally
 
-Clone the repository: git clone https://github.com/your-username/property-recommendation-system.git
+Clone the repository: git clone https://github.com/lakshya-vipassana/property-recommendation-system.git
 
 cd property-recommendation-system
 
