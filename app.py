@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import torch
-
+from sentence_transformers import SentenceTransformer
 # =====================================================
 # Page config
 # =====================================================
@@ -13,14 +13,10 @@ st.title("🏠 Property Recommendation System")
 # =====================================================
 # Load model
 # =====================================================
+
 @st.cache_resource
 def load_model():
-    model = torch.load(
-        "model_cpu.pt",
-        map_location=torch.device("cpu")
-    )
-    model.eval()
-    return model
+    return SentenceTransformer("model/", device="cpu")
 
 model = load_model()   # ✅ IMPORTANT
 
