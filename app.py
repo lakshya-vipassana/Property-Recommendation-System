@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-import torch
 from sentence_transformers import SentenceTransformer
 # =====================================================
 # Page config
@@ -14,20 +13,34 @@ st.title("🏠 Property Recommendation System")
 # Load model
 # =====================================================
 
+# 1. Load model
 @st.cache_resource
 def load_model():
-    return SentenceTransformer("model/", device="cpu")
+    return SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
 
-model = load_model()   # ✅ IMPORTANT
+model = load_model()
 
-# =====================================================
-# Load property data
-# =====================================================
+# 2. Load data
 @st.cache_data
 def load_data():
-    return pd.read_excel("properties.xlsx")
+    return pd.read_excel(
+        "properties.xlsx",
+        sheet_name="Property Data"
+    )
 
 properties_df = load_data()
+
+# 3. Compute embeddings
+@st.cache_data
+def compute_property_embeddings(df):
+    texts = df["Qualitative Description"].fillna("").tolist()
+    return model.encode(texts, show_progress_bar=False)
+
+property_embeddings = compute_property_embeddings(properties_df)
+# =====================================================
+# Data Cleaning
+# =====================================================
+
 
 # Preserve original price for display
 properties_df["Price_raw"] = properties_df["Price"]
@@ -60,15 +73,6 @@ properties_df["Area"] = pd.to_numeric(
     properties_df["Area"], errors="coerce"
 ).fillna(0).astype(int)
 
-# =====================================================
-# Precompute property embeddings (VERY IMPORTANT)
-# =====================================================
-@st.cache_resource
-def compute_property_embeddings(df, model):
-    texts = df["Qualitative Description"].fillna("").tolist()
-    return model.encode(texts, show_progress_bar=False)
-
-property_embeddings = compute_property_embeddings(properties_df, model)
 
 # =====================================================
 # Sidebar Inputs
