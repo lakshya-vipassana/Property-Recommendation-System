@@ -209,5 +209,5 @@ for user_id, group in top_matches.groupby('user_id'):
 top_matches[['user_id', 'property_id', 'match_score']].head(10)
 import torch
 
-torch.save(model, "model_cpu.pt")
+model.save("model/")
 
