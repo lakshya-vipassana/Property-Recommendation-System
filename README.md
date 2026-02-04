@@ -1,44 +1,51 @@
 # 🏠 Property Recommendation System
 
-An end-to-end **property recommendation engine** that matches user preferences with real estate listings using **feature similarity and ranking logic**.  
-The system separates **feasibility filtering** from **preference-based ranking**, ensuring both correctness and personalization.
+**What this system does:**  
+A first-pass property matching and ranking system that aligns user preferences with real estate listings using hard feasibility filters and interpretable similarity-based scoring.
 
-Built using **Python, scikit-learn, and Streamlit**.
+**Core logic vs demo:**  
+The core system implements the matching and ranking methodology; the Streamlit app is a lightweight demo to showcase end-to-end usage and explainability.
+
+**How to run:**  
+Run locally via Streamlit or launch using the provided Docker (amd64) setup for presentation purposes.
 
 ---
 
-## 🚀 Features
+An end-to-end **property matching and ranking system** that aligns user preferences with real estate listings using a combination of **hard constraints and feature-level similarity scoring**.  
+The system explicitly separates **feasibility filtering** from **preference-based ranking**, ensuring both correctness and personalization.
 
-- User preference–based property matching
-- Hard filtering on critical constraints (budget, bedrooms, location, etc.)
-- Similarity-based ranking using cosine similarity
-- Weighted feature scoring for personalized recommendations
+Built using **Python, scikit-learn, sentence-transformers, and Streamlit**.
+
+---
+
+## 🚀 Key Features
+
+- Preference-based property matching and ranking
+- **Hard constraint filtering** (budget, minimum bedrooms)
+- **Semantic intent matching** using sentence embeddings
+- Rule-based amenity overlap scoring
+- Weighted, interpretable match score
 - Interactive web interface built with Streamlit
 - Modular and extensible architecture
+- Dockerized demo deployment (amd64)
 
 ---
 
 ## 🧠 System Architecture
 
-User Input
-|
-v
-Hard Filters (Budget, Bedrooms, Location)
-|
-v
-Feature Engineering & Normalization
-|
-v
-Cosine Similarity Calculation
-|
-v
-Weighted Match Score
-|
-v
-Top-N Property Recommendations
+User Preferences
+↓
+Hard Filters (Budget, Bedrooms)
+↓
+Feature-Level Similarity Computation
+↓
+Weighted Match Score Aggregation
+↓
+Top-N Ranked Property Recommendations
+
 
 **Key Design Insight:**  
-Feasibility is handled first, preferences are ranked later.
+Feasibility is enforced first; preferences are ranked afterward.
 
 ---
 
@@ -48,73 +55,56 @@ Feasibility is handled first, preferences are ranked later.
 - pandas
 - numpy
 - scikit-learn
-- Streamlit
-- Pickle (for model persistence)
 - sentence-transformers
+- Streamlit
+- joblib / pickle (for model persistence)
 
 ---
 
 ## ⚙️ How the System Works
 
-1. User provides preferences such as budget, bedrooms, and location.
-2. Properties that violate hard constraints are filtered out.
-3. Remaining properties are converted into numerical feature vectors.
-4. Cosine similarity is computed between user preferences and properties.
-5. Feature-wise weights are applied to compute a final match score.
-6. Top-ranked properties are displayed to the user.
+1. The user provides preferences such as budget, minimum bedrooms, and a free-text description.
+2. Properties that violate hard constraints (e.g., budget, bedrooms) are filtered out.
+3. Remaining properties are represented using feature-level similarity signals:
+   - Semantic text similarity
+   - Amenity overlap
+   - Price compatibility
+   - Area similarity (weak contextual signal)
+4. A weighted match score is computed for each feasible property.
+5. Properties are ranked by score, and the top-N results are returned.
+
+Weights are manually chosen for **interpretability**, not learned, due to the absence of labeled ground truth.
+
+---
+
+## 📊 Evaluation & Explainability
+
+This is an **unsupervised ranking problem** with no explicit ground-truth labels.
+
+Evaluation focuses on:
+- Qualitative sanity checks
+- Score separation across ranked results
+- Feature contribution analysis using bar charts and heatmaps
+
+The system emphasizes **explainability and alignment with user intent** rather than accuracy metrics.
+
+---
+
+## 🖥️ Demo & Deployment
+
+A lightweight **Streamlit demo application** was deployed using **Docker (amd64)** on a cloud VM to demonstrate end-to-end usage.
+
+⚠️ This deployment is a **presentation prototype**, not a production system.
+
+Live Demo:  
+👉 https://property-matching.azurewebsites.net/
 
 ---
 
 ## ▶️ Running the Application Locally
 
-Clone the repository: git clone https://github.com/lakshya-vipassana/property-recommendation-system.git
-
+```bash
+git clone https://github.com/lakshya-vipassana/property-recommendation-system.git
 cd property-recommendation-system
-
-Install dependencies: pip install -r requirements.txt
-
-Run the Streamlit app: streamlit run app.py
-
----
-
-## 📊 Output
-
-- Ranked list of properties
-- Match scores indicating relevance
-- Real-time interactive recommendations
-
----
-
-## 🎯 Use Cases
-
-- Real estate recommendation platforms
-- Personalized property search
-- Data science and machine learning case studies
-- Decision-support systems
-
----
-
-## 📌 Future Enhancements
-
-- Geospatial intelligence for location-based scoring
-- NLP-based preference extraction
-- Deep learning recommendation models
-- Cloud deployment and CI/CD integration
-- User feedback loop for adaptive learning
-
----
-
-## 👤 Author
-
-**Lakshya Vipassana**   
-Indian Institute of Technology Kharagpur
-
----
-
-## ⭐ Acknowledgements
-
-- scikit-learn documentation
-- Streamlit community
-- Open-source Python ecosystem
-
-If you find this project useful, consider starring the repository.
+pip install -r requirements.txt
+streamlit run app.py
